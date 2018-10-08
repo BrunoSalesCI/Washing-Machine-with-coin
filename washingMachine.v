@@ -1,6 +1,8 @@
-module washingMachine(clk,reset,moeda, lid_r, d_lavar, Tempo, molho, enxague, centrifugar, lavar, pausar, parada);
+module washingMachine(clk,reset,moeda, lid_r, d_lavar, Tempo, molho, enxague, centrifugar, lavar, pausar, parada, botao_50cent, botao_1real);
  input clk,reset,moeda,lid_r,d_lavar,Tempo;
  output reg molho,enxague,centrifugar,lavar,pausar,parada;
+ reg [2:0] count;
+ 
  reg[2:0] estado_atual, proximo_estado;
  parameter ESPERA = 3'b000,
            MOLHO = 3'b001,
@@ -12,7 +14,21 @@ module washingMachine(clk,reset,moeda, lid_r, d_lavar, Tempo, molho, enxague, ce
            PAUSAR = 3'b111;
            
 
+
+
+/*always @(posedge botao_50cent or posedge botao_1real or negedge reset)
+begin
+	if(~reset)
+		count <= 0;
+	else if(botao_50cent == 1)
+		count = count + 1;
+	if(botao_1real == 1)
+		count = count + 2;
+end
+*/
+
 // ATRIBUIÇÃO DE ESTADO - PARTE COMBINACIONAL
+
 always @(estado_atual or moeda or d_lavar or lid_r or Tempo)
 begin
    case (estado_atual)
@@ -225,14 +241,5 @@ begin
      estado_atual <= proximo_estado;
  end
  
- 
-/*
-  assign molho = (estado_atual == MOLHO);
-  assign enxague = (estado_atual == ENXAGUE) | (estado_atual == ENXAGUE2);
-  assign brake = (estado_atual == PAUSAR);
-  assign centrifugar = (estado_atual == CENTRIFUGAR);
-  assign lavar = (estado_atual == LAVAR) | (estado_atual == LAVAR2);
-*/
-
 
 endmodule
