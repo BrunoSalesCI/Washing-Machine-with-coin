@@ -1,6 +1,6 @@
-module washingMachine(clk,reset,moeda, lid_r, d_lavar, Tempo, molho, enxague, centrifugar, lavar, pausar, break);
+module washingMachine(clk,reset,moeda, lid_r, d_lavar, Tempo, molho, enxague, centrifugar, lavar, pausar, parada);
  input clk,reset,moeda,lid_r,d_lavar,Tempo;
- output reg molho,enxague,centrifugar,lavar,pausar,break;
+ output reg molho,enxague,centrifugar,lavar,pausar,parada;
  reg[2:0] estado_atual, proximo_estado;
  parameter ESPERA = 3'b000,
            MOLHO = 3'b001,
@@ -25,7 +25,7 @@ begin
          centrifugar=0;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
          end
 else
 
@@ -36,7 +36,7 @@ else
          centrifugar=0;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
          end
 
 MOLHO:
@@ -49,7 +49,7 @@ if(Tempo==1)													//T = Espera pelo tempo
          centrifugar=0;
          lavar=1;
          pausar=0;
-         break=0;
+         parada=0;
          end
 else
          begin
@@ -59,7 +59,7 @@ else
          centrifugar=0;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
           end
 LAVAR:
 if(Tempo==1)
@@ -71,7 +71,7 @@ if(Tempo==1)
          centrifugar=0;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
          end
 else
          begin
@@ -81,7 +81,7 @@ else
          centrifugar=0;
          lavar=1;
          pausar=0;
-         break=0;
+         parada=0;
          end
 ENXAGUE2:
 if(Tempo==1 && d_lavar==1)
@@ -93,7 +93,7 @@ if(Tempo==1 && d_lavar==1)
          centrifugar=0;
          lavar=1;
          pausar=0;
-         break=0;
+         parada=0;
          end
 else if(Tempo==1 && d_lavar==0)
 
@@ -104,7 +104,7 @@ else if(Tempo==1 && d_lavar==0)
          centrifugar=1;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
          end
 else
          begin
@@ -114,7 +114,7 @@ else
          centrifugar=0;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
          end
 LAVAR2:
 if(Tempo==1)
@@ -126,7 +126,7 @@ if(Tempo==1)
          centrifugar=0;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
          end
 else
          begin
@@ -136,7 +136,7 @@ else
          centrifugar=0;
          lavar=1;
          pausar=0;
-         break=0;
+         parada=0;
          end
 
 ENXAGUE:
@@ -148,7 +148,7 @@ if(Tempo==1)
          centrifugar=1;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
          end
 else
          begin
@@ -158,7 +158,7 @@ else
          centrifugar=0;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
          end
 CENTRIFUGAR:
 if(Tempo==0 && lid_r==1)
@@ -169,7 +169,7 @@ if(Tempo==0 && lid_r==1)
          centrifugar=0;
          lavar=0;
          pausar=1;
-         break=0;
+         parada=0;
          end
 else if(Tempo==1)
          begin
@@ -179,7 +179,7 @@ else if(Tempo==1)
          centrifugar=0;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
          end
 else
          begin
@@ -189,7 +189,7 @@ else
          centrifugar=1;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
          end
 PAUSAR:
 if(lid_r==0)
@@ -200,7 +200,7 @@ if(lid_r==0)
          centrifugar=1;
          lavar=0;
          pausar=0;
-         break=0;
+         parada=0;
          end
 else
          begin
@@ -210,7 +210,7 @@ else
          centrifugar=0;
          lavar=0;
          pausar=1;
-         break=0;
+         parada=0;
          end
 		 default: proximo_estado=ESPERA;
 		 endcase
