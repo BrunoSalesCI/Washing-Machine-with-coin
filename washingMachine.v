@@ -1,9 +1,7 @@
-module blabla(clk,reset,moeda, lid_r, d_lavar, Tempo, molho, enxague, centrifugar, lavar, pausar, break);
+module washingMachine(clk,reset,moeda, lid_r, d_lavar, Tempo, molho, enxague, centrifugar, lavar, pausar, break);
  input clk,reset,moeda,lid_r,d_lavar,Tempo;
  output reg molho,enxague,centrifugar,lavar,pausar,break;
  reg[2:0] estado_atual, proximo_estado;
-
- // ATRIBUIÇÃO DE ESTADO - PARTE COMBINACIONAL
  parameter ESPERA = 3'b000,
            MOLHO = 3'b001,
            LAVAR = 3'b010,
@@ -12,7 +10,9 @@ module blabla(clk,reset,moeda, lid_r, d_lavar, Tempo, molho, enxague, centrifuga
            ENXAGUE2 = 3'b101,
            CENTRIFUGAR = 3'b110,
            PAUSAR = 3'b111;
+           
 
+// ATRIBUIÇÃO DE ESTADO - PARTE COMBINACIONAL
 always @(estado_atual or moeda or d_lavar or lid_r or Tempo)
 begin
    case (estado_atual)
@@ -219,7 +219,7 @@ else
 
 always @(posedge clk or negedge reset)			// ATRIBUIÇÃO DE FUNÇÃO - PARTE SEQUENCIAL
 begin
-   if (reset)
+   if (~reset)
      estado_atual <= ESPERA;
     else
      estado_atual <= proximo_estado;
